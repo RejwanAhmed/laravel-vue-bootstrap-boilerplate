@@ -1,11 +1,11 @@
 <template>
     <div class="d-flex vh-100">
         <!-- Sidebar -->
-        <div
-            :class="['sidebar', collapsed ? 'collapsed' : 'expanded', 'bg-dark', 'text-white', 'd-flex', 'flex-column', 'p-3',]">
+        <div :class="['sidebar', collapsed ? 'collapsed' : 'expanded', 'bg-teal', 'd-flex', 'flex-column', 'pt-3', 'position-sticky', 'top-0', 'start-0']"
+            style="flex-shrink: 0;">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item" v-for="item in menuItems" :key="item.name">
-                    <Link :href="item.route" class="nav-link text-white">
+                    <Link :href="item.route" class="nav-link fw-bold text-white">
                     <i :class="['bi', item.icon, 'me-2']"></i>
                     <span class="link-text">{{ item.name }}</span>
                     </Link>
@@ -16,16 +16,16 @@
         <!-- Right side (top bar + content) -->
         <div class="d-flex flex-column flex-grow-1">
             <!-- Top bar -->
-            <nav class="navbar navbar-expand navbar-dark bg-dark px-3 d-flex justify-content-between"
+            <nav class="navbar navbar-expand navbar-light bg-light px-3 d-flex justify-content-between"
                 style="height: 56px;">
                 <!-- Left: toggle button -->
-                <button class="btn btn-dark" @click="toggleSidebar" aria-label="Toggle sidebar">
+                <button class="btn btn-light" @click="toggleSidebar" aria-label="Toggle sidebar">
                     <i class="bi bi-list fs-4"></i>
                 </button>
 
                 <!-- Right: profile dropdown -->
                 <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle d-flex align-items-center" type="button" id="userMenu"
+                    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="userMenu"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle fs-4 me-2"></i>
                         <span>Profile</span>
@@ -58,10 +58,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { useUiStore } from '@/Stores/ui';
 
-const collapsed = ref(false);
+const uiStore = useUiStore();
+
+// const collapsed = ref(false);
+const collapsed = computed({
+    get: () => uiStore.sidebarCollapsed,
+    set: (val: boolean) => uiStore.setCollapsed(val),
+});
 
 const toggleSidebar = () => {
     collapsed.value = !collapsed.value;
@@ -69,7 +76,10 @@ const toggleSidebar = () => {
 
 // Auto-collapse on small devices
 const handleResize = () => {
-    collapsed.value = window.innerWidth < 768; // Bootstrap's md breakpoint
+    const stored = localStorage.getItem('sidebarCollapsed');
+    if (stored === null) {
+        collapsed.value = window.innerWidth < 768;
+    }
 };
 
 onMounted(() => {
@@ -94,18 +104,26 @@ const menuItems = [
 }
 
 .sidebar.collapsed {
-    width: 80px;
+    width: 65px;
 }
 
 .sidebar.expanded {
-    width: 250px;
+    width: 190px;
 }
 
 .sidebar .nav-link {
     white-space: nowrap;
+    color: #ffffff;
+    /* white default */
+    transition: color 0.3s ease;
 }
 
 .sidebar.collapsed .link-text {
     display: none;
+}
+
+.sidebar ::v-deep .nav-link:hover {
+    color: #2b2a2a !important;
+    text-decoration: none !important;
 }
 </style>
