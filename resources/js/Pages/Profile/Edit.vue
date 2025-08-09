@@ -19,41 +19,35 @@ defineProps<{
         <template #header>
             <h2 class="h5 fw-semibold text-dark mb-0">Profile</h2>
         </template>
-
-        <div class="py-2">
-            <div class="container">
-                <div class="row gy-4">
-
-                    <!-- Update Profile Information -->
-                    <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status"
-                                    class="w-100" />
-                            </div>
-                        </div>
+        
+        <div class="container-fluid">
+            <!-- Update Profile Information -->
+            <div class="col-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status"/>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Update Password -->
-                    <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <UpdatePasswordForm class="w-100" />
-                            </div>
-                        </div>
+            <!-- Update Password -->
+            <div class="col-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <UpdatePasswordForm />
                     </div>
+                </div>
+            </div>
 
-                    <!-- Delete User -->
-                    <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <DeleteUserForm class="w-100" />
-                            </div>
-                        </div>
+            <!-- Delete User -->
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <DeleteUserForm  />
                     </div>
-
                 </div>
             </div>
         </div>
+       
     </AuthenticatedLayout>
 </template>
